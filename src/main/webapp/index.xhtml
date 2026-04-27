@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="titulo">Urban Thread - Inicio</ui:define>
+    <ui:define name="head-extra">
+        <style>
+            /* Ajuste para que todas las imágenes midan lo mismo */
+            .card-img-top {
+                height: 300px; /* Altura fija para uniformidad */
+                object-fit: cover; /* Recorta la imagen para que rellene el espacio sin deformarse */
+                transition: transform 0.3s ease; /* Preparado para efecto de zoom */
+            }
+            /* Efecto de zoom suave al pasar el ratón por la tarjeta */
+            .card:hover .card-img-top {
+                transform: scale(1.05);
+            }
+            /* Contenedor de la imagen para que el zoom no se salga de los bordes */
+            .card {
+                overflow: hidden;
+            }
+            /* Espaciado extra para separar la tienda de la gestión */
+            .shop-section {
+                margin-bottom: 60px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="contenido">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold">Colección 2026</h1>
+            <p>Explora las últimas tendencias en moda urbana y añade tus favoritos al carrito.</p>
+        </div>
+
+        <h:panelGroup rendered="#{pedidoController.cantidadProductosCarrito gt 0}">
+            <div class="alert alert-info d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <strong>Carrito actual:</strong> #{pedidoController.cantidadProductosCarrito} producto(s) añadidos.
+                </div>
+                <h:link outcome="/Pedidos/nuevo.xhtml" value="Ver carrito y confirmar" class="btn btn-sm btn-primary"/>
+            </div>
+        </h:panelGroup>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 shop-section">
+            <ui:repeat value="#{pedidoController.catalogoProductos}" var="producto">
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="#{producto.imageUrl}"
+                             class="card-img-top" alt="#{producto.nombre}" />
+                        <div class="card-body text-center d-flex flex-column">
+                            <h5 class="card-title text-uppercase fw-bold">#{producto.nombre}</h5>
+                            <p class="text-muted small">#{producto.descripcion}</p>
+                            <p class="h5 mb-3">
+                                <h:outputText value="#{producto.precio}">
+                                    <f:convertNumber type="currency" currencySymbol="€"/>
+                                </h:outputText>
+                            </p>
+                            <h:form styleClass="mt-auto">
+                                <h:commandButton value="Añadir al carrito"
+                                                 action="#{pedidoController.agregarAlCarritoDesdeInicio(producto.nombre)}"
+                                                 styleClass="btn btn-dark w-100"/>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </ui:repeat>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6 mb-4">
+                <section class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h2 class="card-title h4">Gestión de Pedidos</h2>
+                        <p class="card-text text-muted">Accede al carrito, confirma compras y consulta tu histórico.</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <h:link outcome="/Pedidos/listado.xhtml" class="text-decoration-none" value="🔍 Listado y Búsqueda"/>
+                            </li>
+                            <li class="list-group-item">
+                                <h:link outcome="/Pedidos/nuevo.xhtml" class="text-decoration-none" value="🛒 Ver Carrito / Nuevo Pedido"/>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-6 mb-4">
+                <section class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h2 class="card-title h4">Área de Usuarios</h2>
+                        <p class="card-text text-muted">Gestiona tu cuenta y consulta el directorio de usuarios.</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <h:link outcome="/Usuarios/registro.xhtml" class="text-decoration-none" value="📝 Crear Nueva Cuenta"/>
+                            </li>
+                            <li class="list-group-item">
+                                <h:link outcome="/Usuarios/perfil.xhtml" class="text-decoration-none" value="👤 Mi Perfil"/>
+                            </li>
+                            <li class="list-group-item">
+                                <h:link outcome="/Usuarios/listado_usuarios.xhtml" class="text-decoration-none" value="📋 Directorio de Usuarios"/>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <h:form styleClass="mb-4">
+            <h5>Consulta rápida de producto</h5>
+            <h:selectOneMenu value="#{productoController.idProducto}" styleClass="form-select mb-2">
+                <f:selectItem itemLabel="Seleccione..." itemValue="#{null}" noSelectionOption="true"/>
+                <f:selectItems value="#{productoController.catalogo}" var="p" itemValue="#{p.id}" itemLabel="#{p.nombre}"/>
+            </h:selectOneMenu>
+            <h:commandButton value="Ver detalle" action="#{productoController.recupera(productoController.idProducto)}"
+                             styleClass="btn btn-outline-dark"/>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+</html>
