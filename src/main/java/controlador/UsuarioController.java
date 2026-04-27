@@ -1,6 +1,8 @@
 package controlador;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
+import modelos.Preferencias;
 import modelos.Usuario;
 import repositorios.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
@@ -21,6 +23,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepo;
+
+    @Autowired
+    private Preferencias preferencias;
 
     // 1. LISTADO
     @GetMapping("/listado")
@@ -81,5 +86,12 @@ public class UsuarioController {
     @GetMapping({"/", "/index"})
     public String inicio(Model model) {
         return "index";
+    }
+
+    @GetMapping("/preferencias/cambiarColor")
+    public String cambiarColor(@RequestParam("color") String nuevoColor, HttpServletRequest request){
+        preferencias.setColor(nuevoColor);
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/index");
     }
 }
