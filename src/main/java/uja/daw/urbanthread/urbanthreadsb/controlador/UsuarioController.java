@@ -61,7 +61,7 @@ public class UsuarioController {
 
         usuario.setRol("USUARIO"); // Valor por defecto
         usuarioRepo.save(usuario);
-        return "redirect:/usuario/listado";
+        return "redirect:/usuarios/listado";
     }
 
     @GetMapping("/login")

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%--@elvariable id="usuario" type="uja.daw.urbanthread.urbanthreadsb.modelos.Usuario"--%>
 
 <jsp:include page="/WEB-INF/fragments/header.jsp" />
 
