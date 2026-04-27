@@ -1,65 +1,47 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:ui="jakarta.faces.facelets"
-      xmlns:f="jakarta.faces.core"
-      xmlns:jsf="jakarta.faces"
-      xmlns:p="http://primefaces.org/ui">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
+<jsp:include page="../fragments/header.jsp" />
 
-    <ui:composition template="/WEB-INF/templates/layout.xhtml">
-        <ui:define name="title"> Directorio de usuarios - Urban Thread</ui:define>
+<main class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Directorio de Usuarios - UrbanThread</h2>
+    <a href="${pageContext.request.contextPath}/usuarios/registro" class="btn btn-success">
+    <i class="bi bi-plus-circle"></i> Nuevo Usuario
+    </a>
+    </div>
 
-        <ui:define name="contenido">
-            <h:form id="formAdmin" rendered="#{usuarioController.esAdmin}">
-                <div class="mb-4 col-md-6">
-                    <label for="buscador" class="form-label fw-bold"> Buscar usuario por nombre</label>
-                    <h:inputText id="buscador" value="#{usuarioController.cadenaBusqueda}" class="form-control"
-                                 placeholder="Escriba el nombre">
-                        <f:ajax event="keyup" render="tablaUsuarios"/>
-                    </h:inputText>
-                </div>
-                <p:dataTable id="tablaUsuarios" value="#{usuarioController.usuariosFiltrados}" var="user" styleClass="mt-4">
+    <div class="table-responsive">
+        <table class="table table-hover table-striped shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Dirección</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach items="${listaUsuarios}" var="user">
+                    <tr>
+                        <td>${user.nombre}</td>
+                        <td>${user.email}</td>
+                        <td>${user.direccion}</td>
+                        <td>
+                            <span class="badge ${user.rol == 'ADMIN' ? 'bg-danger' : 'bg-info text-dark'}">
+                            ${user.rol}
+                            </span>
+                        </td>
+                    </tr>
+                </c:forEach>
+                <c:if test="${empty listaUsuarios}">
+                    <tr>
+                        <td colspan=\"4\" class=\"text-center\">No hay usuarios registrados todavía.</td>
+                    </tr>
+                </c:if>
+            </tbody>
+        </table>
+    </div>
+</main>
 
-                    <p:column headerText="Nombre">
-                        <h:outputText value="#{user.nombre}" />
-                    </p:column>
-
-                    <p:column headerText="Email">
-                        <h:outputText value="#{user.email}" />
-                    </p:column>
-
-                    <p:column headerText="Dirección">
-                        <h:outputText value="#{user.direccion}" />
-                    </p:column>
-
-                    <p:column headerText="Acciones">
-                        <p:commandButton icon="pi pi-trash" value="Borrar"
-                                         action="#{usuarioController.borrarUsuario(user)}"
-                                         update="@form"
-                                         styleClass="ui-button-danger ui-button-sm">
-                            <p:confirm type="popup" header="Atención" message="¿Borrar a #{user.nombre}?" icon="pi pi-exclamation-triangle"/>
-                        </p:commandButton>
-                    </p:column>
-
-                </p:dataTable>
-
-                <p:confirmPopup global="true">
-                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
-                    <p:commandButton value="Sí" type="button" styleClass="ui-confirm-popup-yes" />
-                </p:confirmPopup>
-            </h:form>
-            <div jsf:rendered="#{not usuarioController.esAdmin}">
-                <div class="alert alert-warning mt-5">
-                    <h4 class="alert-heading">ACCESO RESTRINGIDO</h4>
-                    <p>Sólo los Administradores de <strong>Urban Thread</strong> tienen acceso a esta página</p>
-                    <h:link outcome="/Usuarios/perfil.xhtml" value="Volver al perfil"> </h:link>
-                </div>
-
-            </div>
-        </ui:define>
-    </ui:composition>
-
-
-</html>
+<jsp:include page="../fragments/footer.jsp" />
