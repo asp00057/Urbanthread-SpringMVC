@@ -78,4 +78,8 @@ public class UsuarioController {
         model.addAttribute("Error", "Credenciales incorrectas");
         return "views/login";
     }
+    @GetMapping({"/", "/index"})
+    public String inicio(Model model) {
+        return "index";
+    }
 }
