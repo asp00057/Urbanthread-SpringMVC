@@ -31,7 +31,7 @@
 
                 <div class="text-center">
                     <span class="text-muted">¿No tienes cuenta?</span>
-                    <a href="${pageContext.request.contextPath}/views/registro">Regístrate</a>
+                    <a href="${pageContext.request.contextPath}/usuarios/registro">Regístrate</a>
                 </div>
             </form>
         </div>

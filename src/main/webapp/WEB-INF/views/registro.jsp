@@ -48,7 +48,7 @@
 
                 <div class="text-center mt-3">
                     <span class="text-muted">¿Ya tienes cuenta?</span>
-                    <a href="${pageContext.request.contextPath}/views/login">Inicia sesión aquí</a>
+                    <a href="${pageContext.request.contextPath}/usuarios/login">Inicia sesión aquí</a>
                 </div>
             </form:form>
 
