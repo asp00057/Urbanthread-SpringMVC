@@ -62,10 +62,10 @@ public class UsuarioController {
 
         usuario.setRol("USUARIO"); // Valor por defecto
         usuarioRepo.save(usuario);
-        return "redirect:/views/listado";
+        return "redirect:/usuario/listado";
     }
 
-    @GetMapping("/Login")
+    @GetMapping("/login")
     public String mostrarLogin(){
         return "views/login";
     }
@@ -94,4 +94,5 @@ public class UsuarioController {
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/index");
     }
+
 }
