@@ -31,20 +31,6 @@
             </ul>
 
             <div class="d-flex align-items-center">
-                <div class="color-picker-container d-flex">
-                    <a href="${pageContext.request.contextPath}/usuarios/preferencias/cambiarColor?color=%23bdc3c7"
-                       class="color-box ${preferencias.color == '#bdc3c7' ? 'active' : ''}"
-                       style="background-color: #bdc3c7;" title="Gris"></a>
-
-                    <a href="${pageContext.request.contextPath}/usuarios/preferencias/cambiarColor?color=%23e3f2fd"
-                       class="color-box ${preferencias.color == '#e3f2fd' ? 'active' : ''}"
-                       style="background-color: #e3f2fd;" title="Azul"></a>
-
-                    <a href="${pageContext.request.contextPath}/usuarios/preferencias/cambiarColor?color=%23fff3e0"
-                       class="color-box ${preferencias.color == '#fff3e0' ? 'active' : ''}"
-                       style="background-color: #fff3e0;" title="Naranja"></a>
-                </div>
-
                 <c:choose>
                     <c:when test="${not empty sessionScope.usuarioLogueado}">
                         <span class="text-white me-3">Hola, ${sessionScope.usuarioLogueado.nombre}</span>

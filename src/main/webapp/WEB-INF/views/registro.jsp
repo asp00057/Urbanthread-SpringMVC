@@ -11,7 +11,6 @@
         </div>
         <div class="card-body">
 
-            <%-- El modelAttribute debe coincidir con el nombre que pongas en el model.addAttribute del controlador --%>
             <form:form modelAttribute="usuario" action="${pageContext.request.contextPath}/usuarios/registro" method="POST">
 
                 <div class="mb-3">
