@@ -1,10 +1,9 @@
-package controlador;
+package uja.daw.urbanthread.urbanthreadsb.controlador;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import modelos.Preferencias;
-import modelos.Usuario;
-import repositorios.UsuarioRepository;
+import uja.daw.urbanthread.urbanthreadsb.modelos.Preferencias;
+import uja.daw.urbanthread.urbanthreadsb.modelos.Usuario;
+import uja.daw.urbanthread.urbanthreadsb.repositorios.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,11 +82,6 @@ public class UsuarioController {
         model.addAttribute("Error", "Credenciales incorrectas");
         return "views/login";
     }
-    @GetMapping({"/", "/index"})
-    public String inicio(Model model) {
-        return "index";
-    }
-
     @GetMapping("/preferencias/cambiarColor")
     public String cambiarColor(@RequestParam("color") String nuevoColor, HttpServletRequest request){
         preferencias.setColor(nuevoColor);

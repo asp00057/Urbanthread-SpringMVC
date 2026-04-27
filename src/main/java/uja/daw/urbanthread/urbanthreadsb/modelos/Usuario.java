@@ -1,4 +1,4 @@
-package modelos;
+package uja.daw.urbanthread.urbanthreadsb.modelos;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

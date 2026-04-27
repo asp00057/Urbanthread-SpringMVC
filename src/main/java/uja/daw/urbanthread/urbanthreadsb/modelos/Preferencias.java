@@ -1,4 +1,4 @@
-package modelos;
+package uja.daw.urbanthread.urbanthreadsb.modelos;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
