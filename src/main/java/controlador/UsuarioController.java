@@ -1,7 +1,9 @@
 package controlador;
 
+import jakarta.annotation.PostConstruct;
 import modelos.Usuario;
 import repositorios.UsuarioRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -23,41 +26,56 @@ public class UsuarioController {
     @GetMapping("/listado")
     public String listarUsuarios(Model model) {
         model.addAttribute("listaUsuarios", usuarioRepo.findAll());
-        return "usuarios/listado_usuarios"; // Busca /WEB-INF/jsp/usuarios/listado_usuarios.jsp
+        return "views/listado_usuarios";
     }
 
     // 2. FORMULARIO DE ALTA (GET)
     @GetMapping("/registro")
     public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("usuario", new Usuario());
-        return "usuarios/registro";
+        return "views/registro";
     }
 
     // 3. PROCESAR ALTA + VALIDACIÓN (POST)
     @PostMapping("/registro")
     public String registrarUsuario(@Valid @ModelAttribute("usuario") Usuario usuario,
-                                   BindingResult result, Model model) {
+                                   BindingResult result) {
 
-        // Validación personalizada: ¿Ya existe el email?
         if (usuarioRepo.existsByEmail(usuario.getEmail())) {
-            result.rejectValue("email", "error.usuario", "Este email ya está registrado");
+            result.rejectValue("email", "error.usuario", "Ya existe un usuario con ese email");
         }
 
-        // Validación personalizada: Edad (migrada de tu JSF)
         if (usuario.getFechaNacimiento() != null) {
             if (Period.between(usuario.getFechaNacimiento(), LocalDate.now()).getYears() < 18) {
                 result.rejectValue("fechaNacimiento", "error.usuario", "Debes ser mayor de 18 años");
             }
         }
 
-        // Si hay errores (de anotaciones o manuales), volvemos al formulario
         if (result.hasErrors()) {
-            return "usuarios/registro";
+            return "views/registro";
         }
 
-        // Guardar y redirigir al listado
         usuario.setRol("USUARIO"); // Valor por defecto
         usuarioRepo.save(usuario);
-        return "redirect:/usuarios/listado";
+        return "redirect:/views/listado";
+    }
+
+    @GetMapping("/Login")
+    public String mostrarLogin(){
+        return "views/login";
+    }
+
+    @PostMapping("/login")
+    public String procesarLogin(@RequestParam String email,
+                                @RequestParam String password,
+                                HttpSession session,
+                                Model model){
+        Optional<Usuario> userOpt = usuarioRepo.findById(email);
+        if (userOpt.isPresent() && userOpt.get().getPwd().equals(password)){
+            session.setAttribute("usuarioLogueado", userOpt.get());
+            return "redirect:/index";
+        }
+        model.addAttribute("Error", "Credenciales incorrectas");
+        return "views/login";
     }
 }
