@@ -79,7 +79,7 @@ public class UsuarioController {
             session.setAttribute("usuarioLogueado", userOpt.get());
             return "redirect:/index";
         }
-        model.addAttribute("Error", "Credenciales incorrectas");
+        model.addAttribute("error", "Credenciales incorrectas");
         return "views/login";
     }
     @GetMapping("/preferencias/cambiarColor")
